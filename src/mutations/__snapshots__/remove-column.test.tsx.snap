@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`remove-column remove column in 2X2 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum ...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "3",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`remove-column remove column in 2X2 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum ...</p><table><tbody><tr><td style=\\"width:200px\\"></td></tr><tr><td style=\\"width:200px\\"></td></tr></tbody></table>"`;
