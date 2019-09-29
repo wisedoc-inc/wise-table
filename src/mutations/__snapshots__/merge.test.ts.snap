@@ -1,0 +1,743 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`merge merge 0 and 1 in 2X2 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum ...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "colspan": "2",
+                  "rowspan": "1",
+                  "width": "400",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "0",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "2",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "3",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`merge merge 0 and 1 in 2X2 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum ...</p><table><tbody><tr><td colSpan=\\"2\\" rowspan=\\"1\\" style=\\"width:400px\\"></td></tr><tr><td style=\\"width:200px\\"></td><td style=\\"width:200px\\"></td></tr></tbody></table>"`;
+
+exports[`merge merge 0 and 2 in 2X2 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum ...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "colspan": "1",
+                  "rowspan": "2",
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "0",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "2",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "3",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`merge merge 0 and 2 in 2X2 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum ...</p><table><tbody><tr><td colSpan=\\"1\\" rowspan=\\"2\\" style=\\"width:200px\\"></td><td style=\\"width:200px\\"></td></tr><tr><td style=\\"width:200px\\"></td></tr></tbody></table>"`;
+
+exports[`merge merge 2 column at 3X3 row/colspan2 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum ...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "colspan": "2",
+                  "rowspan": "3",
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "0",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "6",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "7",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "2",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "8",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`merge merge 2 column at 3X3 row/colspan2 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum ...</p><table><tbody><tr><td colSpan=\\"2\\" rowspan=\\"3\\" style=\\"width:200px\\"></td><td style=\\"width:200px\\"></td></tr><tr><td style=\\"width:200px\\"></td></tr><tr><td style=\\"width:200px\\"></td></tr></tbody></table>"`;
+
+exports[`merge merge 2 column at 4X3 rowspan3 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "0",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {
+                  "width": "200",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {
+                  "colspan": "2",
+                  "rowspan": "3",
+                  "width": "400",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "2",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "3",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "6",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "9",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {},
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "4",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {},
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "5",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {},
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "7",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+              Object {
+                "data": Object {},
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "8",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`merge merge 2 column at 4X3 rowspan3 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum...</p><table><tbody><tr><td style=\\"width:200px\\"></td><td style=\\"width:200px\\"></td><td colSpan=\\"2\\" rowspan=\\"3\\" style=\\"width:400px\\"></td></tr><tr><td style=\\"width:auto\\"></td><td style=\\"width:auto\\"></td></tr><tr><td style=\\"width:auto\\"></td><td style=\\"width:auto\\"></td></tr></tbody></table>"`;
+
+exports[`merge merge all in 2X2 table 1`] = `
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Lorem ipsum ...",
+          },
+        ],
+        "object": "block",
+        "type": "paragraph",
+      },
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "data": Object {
+                  "colspan": "2",
+                  "rowspan": "1",
+                  "width": "400",
+                },
+                "nodes": Array [
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "0",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "1",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "2",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                  Object {
+                    "data": Object {},
+                    "nodes": Array [
+                      Object {
+                        "marks": Array [],
+                        "object": "text",
+                        "text": "3",
+                      },
+                    ],
+                    "object": "block",
+                    "type": "table_content",
+                  },
+                ],
+                "object": "block",
+                "type": "table_cell",
+              },
+            ],
+            "object": "block",
+            "type": "table_row",
+          },
+        ],
+        "object": "block",
+        "type": "table",
+      },
+    ],
+    "object": "document",
+  },
+  "object": "value",
+}
+`;
+
+exports[`merge merge all in 2X2 table 2`] = `"<p style=\\"margin:0\\">Lorem ipsum ...</p><table><tbody><tr><td colSpan=\\"2\\" rowspan=\\"1\\" style=\\"width:400px\\"></td></tr></tbody></table>"`;
