@@ -35,6 +35,14 @@ export class ExampleEditor extends React.Component<Props> {
     this.editor.removeTable();
   };
 
+  areMultipleCellsSelected = () => {
+    this.editor.areMultipleCellsSelected();
+  };
+
+  isSelectionInTable = () => {
+    this.editor.isSelectionInTable();
+  };
+
   insertTable = () => {
     this.editor.insertTable(3, 3, { columnWidth: 200, maxWidth: 500 });
   };
@@ -98,6 +106,8 @@ export class ExampleEditor extends React.Component<Props> {
   render() {
     return (
       <>
+        <button onMouseDown={this.isSelectionInTable}>Selection Table</button>
+        <button onMouseDown={this.areMultipleCellsSelected}>Multiple Cells Selected</button>
         <button onMouseDown={this.insertTable}>Insert Table</button>
         <button onMouseDown={this.insertAbove}>Insert Above</button>
         <button onMouseDown={this.insertBelow}>Insert Below</button>

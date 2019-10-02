@@ -105,12 +105,17 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
       e.preventDefault();
     }, []);
 
+    const onContextMenu = React.useCallback((e: React.SyntheticEvent) => {
+      e.preventDefault();
+    }, []);
+
     return (
       <table
         ref={ref}
         style={{ ...props.style, ...tableStyle, maxWidth }}
         {...props.attributes}
         onDragStart={onDragStart}
+        onContextMenu={onContextMenu}
       >
         {props.children}
       </table>
@@ -154,6 +159,15 @@ type CellProps = {
 
 const Cell = React.memo((props: CellProps) => {
   const width = typeof props.node.data.get('width') === 'undefined' ? 'auto' : props.node.data.get('width') + 'px';
+  const isRightClick = (e: any) => {
+    if (e.which) {
+      return e.which === 3;
+    }
+    if (e.button) {
+      return e.button === 2;
+    }
+    return false;
+  };
   const onMouseUp = React.useCallback((e: Event) => {
     props.store.clearCellSelecting(props.editor);
     window.removeEventListener('mouseup', onMouseUp);
@@ -182,16 +196,37 @@ const Cell = React.memo((props: CellProps) => {
       {...props.attributes}
       onMouseDown={e => {
         if (!(e.target instanceof HTMLElement)) return;
-        props.store.setAnchorCellBlock(null);
-        props.store.setFocusCellBlock(null);
-        removeSelection(props.editor);
-        props.store.setCellSelecting(props.editor);
-        const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-        props.store.setAnchorCellBlock(anchorCellBlock);
-        window.addEventListener('mouseup', onMouseUp);
-        window.addEventListener('click', onWindowClick);
+        if (!isRightClick(e)) {
+          props.store.setAnchorCellBlock(null);
+          props.store.setFocusCellBlock(null);
+          console.log('entered here');
+          removeSelection(props.editor);
+          props.store.setCellSelecting(props.editor);
+          const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+          props.store.setAnchorCellBlock(anchorCellBlock);
+          window.addEventListener('mouseup', onMouseUp);
+          window.addEventListener('click', onWindowClick);
+        }
       }}
+      onContextMenu={(e: any) => {
+        const t = table.TableLayout.create(props.editor, props.opts);
+        if (!t) return false;
+        const anchored = table.findAnchorCell(props.editor, props.opts);
+        const focused = table.findFocusCell(props.editor, props.opts);
+        if ((anchored || focused) && props.node.data.get('selectionColor')) {
+          console.log('[entered here]');
+          e.preventDefault();
+        } else {
+          removeSelection(props.editor);
+          // const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+          // console.log('[anchorCellBlock not selected]', anchorCellBlock, props.editor.value.selection);
+          // props.editor.select(props.editor.value.selection);
+          // props.store.setAnchorCellBlock(anchorCellBlock);
+        }
+      }}
+      // onSelectStart={() => {}}
       onMouseOver={e => {
+        e.stopPropagation();
         const anchorCellBlock = props.store.getAnchorCellBlock();
         if (anchorCellBlock === null) return;
         if (!(e.target instanceof HTMLElement)) return;
@@ -238,6 +273,7 @@ const Cell = React.memo((props: CellProps) => {
       style={{
         ...props.opts.cellStyle,
         width,
+        minWidth: '32px',
         verticalAlign: 'baseline',
         backgroundColor: props.node.data.get('selectionColor'),
       }}
