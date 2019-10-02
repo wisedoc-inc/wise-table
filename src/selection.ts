@@ -38,7 +38,6 @@ export function removeSelectionStyle() {
 }
 
 export function addSelectionStyle() {
-  console.log('[addSelectionStyle]');
   // HACK: Add ::selection style when greater than 1 cells selected.
   if (!document.querySelector(`style#${insertStyleId}`)) {
     const style = document.createElement('style');

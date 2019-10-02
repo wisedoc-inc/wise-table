@@ -66,8 +66,8 @@ export function EditTable(options: Option = defaultOptions) {
     const anchorCellBlock = store.getAnchorCellBlock();
     const focusCellBlock = store.getFocusCellBlock();
 
-    console.log('[anchored, focused]', anchorCellBlock, focusCellBlock);
-    // return { anchorCellBlock, focusCellBlock };
+    // console.log('[anchored, focused]', anchorCellBlock, focusCellBlock);
+    return { anchorCellBlock, focusCellBlock };
   }
 
   function isSelectionInTable(editor: Editor) {

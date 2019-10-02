@@ -159,6 +159,7 @@ type CellProps = {
 
 const Cell = React.memo((props: CellProps) => {
   const width = typeof props.node.data.get('width') === 'undefined' ? 'auto' : props.node.data.get('width') + 'px';
+
   const isRightClick = (e: any) => {
     if (e.which) {
       return e.which === 3;
@@ -168,10 +169,12 @@ const Cell = React.memo((props: CellProps) => {
     }
     return false;
   };
+
   const onMouseUp = React.useCallback((e: Event) => {
     props.store.clearCellSelecting(props.editor);
     window.removeEventListener('mouseup', onMouseUp);
   }, []);
+
   const onWindowClick = React.useCallback(
     (e: Event) => {
       if (!table.findCurrentTable(props.editor, props.opts)) {
@@ -191,83 +194,84 @@ const Cell = React.memo((props: CellProps) => {
     };
   }, [onMouseUp, onWindowClick]);
 
+  const onMouseDown: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!isRightClick(e)) {
+      props.store.setAnchorCellBlock(null);
+      props.store.setFocusCellBlock(null);
+      removeSelection(props.editor);
+      props.store.setCellSelecting(props.editor);
+      const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+      props.store.setAnchorCellBlock(anchorCellBlock);
+      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('click', onWindowClick);
+    }
+  };
+  const onContextMenu = (e: any) => {
+    const t = table.TableLayout.create(props.editor, props.opts);
+    if (!t) return false;
+    const anchored = table.findAnchorCell(props.editor, props.opts);
+    const focused = table.findFocusCell(props.editor, props.opts);
+    if ((anchored || focused) && props.node.data.get('selectionColor')) {
+      e.preventDefault();
+    } else {
+      removeSelection(props.editor);
+      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('click', onWindowClick);
+      // const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+      // console.log('[anchorCellBlock not selected]', anchorCellBlock, props.editor.value.selection);
+      // props.editor.select(props.editor.value.selection);
+      // props.store.setAnchorCellBlock(anchorCellBlock);
+    }
+  };
+  const onMouseOver: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
+    e.stopPropagation();
+    const anchorCellBlock = props.store.getAnchorCellBlock();
+    if (anchorCellBlock === null) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!props.store.getCellSelecting()) return;
+    const focusCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+    if (!focusCellBlock) return;
+    const prevFocusBlock = props.store.getFocusCellBlock();
+    if (focusCellBlock.key === (prevFocusBlock && prevFocusBlock.key)) return;
+    const t = table.TableLayout.create(props.editor, props.opts);
+    if (!t) {
+      removeSelection(props.editor);
+      props.store.setAnchorCellBlock(null);
+      props.store.setFocusCellBlock(null);
+      return;
+    }
+    props.store.setFocusCellBlock(focusCellBlock);
+    // HACK: Add ::selection style when greater than 1 cells selected.
+    addSelectionStyle();
+    const blocks = table.createSelectedBlockMap(props.editor, anchorCellBlock.key, focusCellBlock.key, props.opts);
+    props.editor.withoutSaving(() => {
+      t.table.forEach(row => {
+        row.forEach(cell => {
+          if (blocks[cell.key]) {
+            props.editor.setNodeByKey(cell.key, {
+              type: cell.block.type,
+              data: {
+                ...cell.block.data.toObject(),
+                selectionColor: props.opts.selectionColor,
+              },
+            });
+          } else {
+            props.editor.setNodeByKey(cell.key, {
+              type: cell.block.type,
+              data: { ...cell.block.data.toObject(), selectionColor: null },
+            });
+          }
+        });
+      });
+    });
+  };
   return (
     <td
       {...props.attributes}
-      onMouseDown={e => {
-        if (!(e.target instanceof HTMLElement)) return;
-        if (!isRightClick(e)) {
-          props.store.setAnchorCellBlock(null);
-          props.store.setFocusCellBlock(null);
-          console.log('entered here');
-          removeSelection(props.editor);
-          props.store.setCellSelecting(props.editor);
-          const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-          props.store.setAnchorCellBlock(anchorCellBlock);
-          window.addEventListener('mouseup', onMouseUp);
-          window.addEventListener('click', onWindowClick);
-        }
-      }}
-      onContextMenu={(e: any) => {
-        const t = table.TableLayout.create(props.editor, props.opts);
-        if (!t) return false;
-        const anchored = table.findAnchorCell(props.editor, props.opts);
-        const focused = table.findFocusCell(props.editor, props.opts);
-        if ((anchored || focused) && props.node.data.get('selectionColor')) {
-          console.log('[entered here]');
-          e.preventDefault();
-        } else {
-          removeSelection(props.editor);
-          // const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-          // console.log('[anchorCellBlock not selected]', anchorCellBlock, props.editor.value.selection);
-          // props.editor.select(props.editor.value.selection);
-          // props.store.setAnchorCellBlock(anchorCellBlock);
-        }
-      }}
-      // onSelectStart={() => {}}
-      onMouseOver={e => {
-        e.stopPropagation();
-        const anchorCellBlock = props.store.getAnchorCellBlock();
-        if (anchorCellBlock === null) return;
-        if (!(e.target instanceof HTMLElement)) return;
-        if (!props.store.getCellSelecting()) return;
-        const focusCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-        if (!focusCellBlock) return;
-        const prevFocusBlock = props.store.getFocusCellBlock();
-        if (focusCellBlock.key === (prevFocusBlock && prevFocusBlock.key)) return;
-        const t = table.TableLayout.create(props.editor, props.opts);
-        if (!t) {
-          removeSelection(props.editor);
-          props.store.setAnchorCellBlock(null);
-          props.store.setFocusCellBlock(null);
-          return;
-        }
-        props.store.setFocusCellBlock(focusCellBlock);
-        // HACK: Add ::selection style when greater than 1 cells selected.
-        addSelectionStyle();
-
-        const blocks = table.createSelectedBlockMap(props.editor, anchorCellBlock.key, focusCellBlock.key, props.opts);
-        props.editor.withoutSaving(() => {
-          t.table.forEach(row => {
-            row.forEach(cell => {
-              if (blocks[cell.key]) {
-                props.editor.setNodeByKey(cell.key, {
-                  type: cell.block.type,
-                  data: {
-                    ...cell.block.data.toObject(),
-                    selectionColor: props.opts.selectionColor,
-                  },
-                });
-              } else {
-                props.editor.setNodeByKey(cell.key, {
-                  type: cell.block.type,
-                  data: { ...cell.block.data.toObject(), selectionColor: null },
-                });
-              }
-            });
-          });
-        });
-      }}
+      onMouseDown={onMouseDown}
+      onContextMenu={onContextMenu}
+      onMouseOver={onMouseOver}
       colSpan={props.node.data.get('colspan')}
       rowSpan={props.node.data.get('rowspan')}
       style={{
