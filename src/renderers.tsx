@@ -212,13 +212,10 @@ const Cell = React.memo((props: CellProps) => {
     if ((anchored || focused) && props.node.data.get('selectionColor')) {
       e.preventDefault();
     } else {
+      console.log('[non selected cell right clicked ]');
       removeSelection(props.editor);
-      window.addEventListener('mouseup', onMouseUp);
-      window.addEventListener('click', onWindowClick);
-      // const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-      // console.log('[anchorCellBlock not selected]', anchorCellBlock, props.editor.value.selection);
-      // props.editor.select(props.editor.value.selection);
-      // props.store.setAnchorCellBlock(anchorCellBlock);
+      // window.addEventListener('mouseup', onMouseUp);
+      // window.addEventListener('click', onWindowClick);
     }
   };
   const onMouseOver: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
