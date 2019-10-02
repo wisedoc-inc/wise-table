@@ -37,7 +37,6 @@ export interface TableHandler {
 export const InnerTable = React.forwardRef<TableHandler, TableProps & { attributes: any; style?: React.CSSProperties }>(
   (props, tableRef) => {
     const [disableResizing, forceUpdate] = React.useState(false);
-    const maxWidth = typeof props.maxWidth === 'undefined' ? 'auto' : props.maxWidth + 'px';
     const onInit = React.useCallback(
       (values: ResizeValue) => {
         props.onInit(props.editor, values);
@@ -112,7 +111,7 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
     return (
       <table
         ref={ref}
-        style={{ ...props.style, ...tableStyle, maxWidth }}
+        style={{ ...props.style, ...tableStyle, width: '100%' }}
         {...props.attributes}
         onDragStart={onDragStart}
         onContextMenu={onContextMenu}
@@ -158,8 +157,6 @@ type CellProps = {
 };
 
 const Cell = React.memo((props: CellProps) => {
-  const width = typeof props.node.data.get('width') === 'undefined' ? 'auto' : props.node.data.get('width') + 'px';
-
   const isRightClick = (e: any) => {
     if (e.which) {
       return e.which === 3;
@@ -276,7 +273,6 @@ const Cell = React.memo((props: CellProps) => {
       rowSpan={props.node.data.get('rowspan')}
       style={{
         ...props.opts.cellStyle,
-        width,
         minWidth: '32px',
         verticalAlign: 'baseline',
         backgroundColor: props.node.data.get('selectionColor'),
@@ -295,7 +291,6 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
       case opts.typeContent:
         return <Content attributes={props.attributes}> {props.children}</Content>;
       case opts.typeTable:
-        const maxWidth = props.node.data.get('maxWidth') as string | undefined;
         return (
           <Table
             ref={ref}
@@ -304,7 +299,6 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
             onInit={updateWidth}
             onUpdate={updateWidth}
             onResizeStop={updateWidth}
-            maxWidth={maxWidth}
             style={opts.tableStyle}
             attributes={props.attributes}
           >
