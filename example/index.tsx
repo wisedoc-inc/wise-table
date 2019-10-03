@@ -39,6 +39,10 @@ export class ExampleEditor extends React.Component<Props> {
     this.editor.makeTitleRow();
   };
 
+  makeTitleColumn = () => {
+    this.editor.makeTitleColumn();
+  };
+
   areMultipleCellsSelected = () => {
     this.editor.areMultipleCellsSelected();
   };
@@ -112,6 +116,7 @@ export class ExampleEditor extends React.Component<Props> {
       <>
         <button onMouseDown={this.isSelectionInTable}>Selection Table</button>
         <button onMouseDown={this.makeTitleRow}>Make title row</button>
+        <button onMouseDown={this.makeTitleColumn}>Make title Column</button>
         <button onMouseDown={this.areMultipleCellsSelected}>Multiple Cells Selected</button>
         <button onMouseDown={this.insertTable}>Insert Table</button>
         <button onMouseDown={this.insertAbove}>Insert Above</button>
