@@ -258,6 +258,8 @@ const Cell = React.memo((props: CellProps) => {
       });
     });
   };
+  const selectionColor = props.node.data.get('selectionColor');
+  const isTitleColumn = props.node.data.get('isTitleColumn');
   return (
     <td
       {...props.attributes}
@@ -270,8 +272,7 @@ const Cell = React.memo((props: CellProps) => {
         ...props.opts.cellStyle,
         minWidth: '32px',
         verticalAlign: 'baseline',
-        //TODO: ADD BACKGROUND COLOR FOR MAKE TITLE ROW/COLUMN
-        backgroundColor: props.node.data.get('selectionColor'),
+        backgroundColor: selectionColor ? selectionColor : isTitleColumn ? props.opts.titleColor : null,
       }}
     >
       {props.children}

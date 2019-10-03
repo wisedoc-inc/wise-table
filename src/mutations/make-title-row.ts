@@ -5,7 +5,6 @@ import { Option } from '../option';
 export function makeTitleRow(opts: Required<Option>, editor: Editor) {
   const t = table.TableLayout.create(editor, opts);
   if (!t) return false;
-  console.log('[col]', t.columnIndex);
   const currentCell = table.TableLayout.currentCell(editor, opts);
   if (!currentCell) return;
 
