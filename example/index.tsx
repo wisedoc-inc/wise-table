@@ -143,7 +143,11 @@ export class ExampleEditor extends React.Component<Props> {
           plugins={plugins}
           placeholder="Enter some text..."
           value={this.state.value}
-          onChange={this.onChange}
+          onChange={e => {
+            setTimeout(() => {
+              this.onChange(e);
+            }, 500);
+          }}
         />
       </>
     );
