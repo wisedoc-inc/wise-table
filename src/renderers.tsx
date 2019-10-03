@@ -104,9 +104,9 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
       e.preventDefault();
     }, []);
 
-    const onContextMenu = React.useCallback((e: React.SyntheticEvent) => {
-      e.preventDefault();
-    }, []);
+    // const onContextMenu = React.useCallback((e: React.SyntheticEvent) => {
+    //   e.preventDefault();
+    // }, []);
 
     return (
       <table
@@ -114,7 +114,7 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
         style={{ ...props.style, ...tableStyle, width: '100%' }}
         {...props.attributes}
         onDragStart={onDragStart}
-        onContextMenu={onContextMenu}
+        // onContextMenu={onContextMenu}
       >
         {props.children}
       </table>
@@ -212,7 +212,7 @@ const Cell = React.memo((props: CellProps) => {
     if ((anchored || focused) && props.node.data.get('selectionColor')) {
       e.preventDefault();
     } else {
-      console.log('[non selected cell right clicked ]');
+      // console.log('[non selected cell right clicked ]', anchored);
       removeSelection(props.editor);
       // window.addEventListener('mouseup', onMouseUp);
       // window.addEventListener('click', onWindowClick);
@@ -272,6 +272,7 @@ const Cell = React.memo((props: CellProps) => {
         ...props.opts.cellStyle,
         minWidth: '32px',
         verticalAlign: 'baseline',
+        //TODO: ADD BACKGROUND COLOR FOR MAKE TITLE ROW/COLUMN
         backgroundColor: props.node.data.get('selectionColor'),
       }}
     >
