@@ -6,6 +6,8 @@ export type Option = {
   typeTable?: string;
   typeContent?: string;
   selectionColor?: string;
+  titleColor?: string;
+  isTitleRow?: boolean;
   cellStyle?: React.CSSProperties;
   rowStyle?: React.CSSProperties;
   tableStyle?: React.CSSProperties;
@@ -18,6 +20,8 @@ export const defaultOptions: Required<Option> = {
   typeTable: 'table',
   typeContent: 'table_content',
   selectionColor: '#B9D3FC',
+  titleColor: '#EEEEEE',
+  isTitleRow: true,
   cellStyle: { padding: '3px' },
   rowStyle: {},
   tableStyle: {},

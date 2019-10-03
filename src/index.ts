@@ -14,6 +14,7 @@ import { Option, defaultOptions } from './option';
 
 import { insertAbove } from './mutations/insert-above';
 import { insertBelow } from './mutations/insert-below';
+import { makeTitleRow } from './mutations/make-title-row';
 
 import { insertLeft } from './mutations/insert-left';
 import { insertRight } from './mutations/insert-right';
@@ -37,6 +38,7 @@ export interface EditTableCommands {
   insertRow: () => EditTableCommands & Editor;
   insertAbove: () => EditTableCommands & Editor;
   insertBelow: () => EditTableCommands & Editor;
+  makeTitleRow: () => EditTableCommands & Editor;
 
   insertLeft: () => EditTableCommands & Editor;
   insertRight: () => EditTableCommands & Editor;
@@ -69,6 +71,18 @@ export function EditTable(options: Option = defaultOptions) {
     // console.log('[anchored, focused]', anchorCellBlock, focusCellBlock);
     return { anchorCellBlock, focusCellBlock };
   }
+
+  // function makeTitleRow(editor: Editor) {
+  //   const t = table.TableLayout.create(editor, opts);
+  //   if (!t) return false;
+  //   const anchored = table.findAnchorCell(editor, opts);
+  //   const focused = table.findFocusCell(editor, opts);
+  //   // const anchorCellBlock = store.getAnchorCellBlock();
+  //   // const focusCellBlock = store.getFocusCellBlock();
+
+  //   console.log('[anchored, focused]', anchored, focused);
+  //   // return { anchorCellBlock, focusCellBlock };
+  // }
 
   function isSelectionInTable(editor: Editor) {
     const { startBlock, endBlock } = editor.value;
@@ -277,6 +291,7 @@ export function EditTable(options: Option = defaultOptions) {
       // row
       insertAbove: bindEditor(insertAbove),
       insertBelow: bindEditor(insertBelow),
+      makeTitleRow: bindEditor(makeTitleRow),
       // column
       insertLeft: bindEditor(insertLeft),
       insertRight: bindEditor(insertRight),

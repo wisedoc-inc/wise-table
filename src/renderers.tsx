@@ -214,8 +214,6 @@ const Cell = React.memo((props: CellProps) => {
     } else {
       // console.log('[non selected cell right clicked ]', anchored);
       removeSelection(props.editor);
-      // window.addEventListener('mouseup', onMouseUp);
-      // window.addEventListener('click', onWindowClick);
     }
   };
   const onMouseOver: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
@@ -305,7 +303,11 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
         );
       case opts.typeRow:
         return (
-          <tr {...props.attributes} style={opts.rowStyle} onDrag={preventDefault}>
+          <tr
+            {...props.attributes}
+            style={{ backgroundColor: props.node.data.get('isTitleRow') ? opts.titleColor : null }}
+            onDrag={preventDefault}
+          >
             {props.children}
           </tr>
         );
