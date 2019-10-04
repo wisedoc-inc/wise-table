@@ -144,9 +144,9 @@ export class ExampleEditor extends React.Component<Props> {
           placeholder="Enter some text..."
           value={this.state.value}
           onChange={e => {
-            setTimeout(() => {
-              this.onChange(e);
-            }, 500);
+            // setTimeout(() => {
+            this.onChange(e);
+            // }, 500);
           }}
         />
       </>
