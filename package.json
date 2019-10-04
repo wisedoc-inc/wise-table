@@ -1,6 +1,6 @@
 {
   "name": "@wisedocnpm/wise-table",
-  "version": "0.1.0",
+  "version": "0.2.4",
   "repository": "https://github.com/wisedoc-inc/wisetable.git",
   "author": "Wisedoc",
   "license": "Wisedoc",
@@ -21,7 +21,7 @@
     "build:prod:es5": "rollup -c scripts/prod.es5.js",
     "build": "npm-run-all --serial build:prod:*",
     "build-storybook": "build-storybook --quiet --loglevel silent",
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "start": "start-storybook -p 9001 -c .storybook",
     "prepublishOnly": "npm-run-all --serial build tsc copy-decs"
   },
   "devDependencies": {

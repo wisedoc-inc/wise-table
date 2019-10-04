@@ -37,7 +37,6 @@ export interface TableHandler {
 export const InnerTable = React.forwardRef<TableHandler, TableProps & { attributes: any; style?: React.CSSProperties }>(
   (props, tableRef) => {
     const [disableResizing, forceUpdate] = React.useState(false);
-    const maxWidth = typeof props.maxWidth === 'undefined' ? 'auto' : props.maxWidth + 'px';
     const onInit = React.useCallback(
       (values: ResizeValue) => {
         props.onInit(props.editor, values);
@@ -105,12 +104,17 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
       e.preventDefault();
     }, []);
 
+    // const onContextMenu = React.useCallback((e: React.SyntheticEvent) => {
+    //   e.preventDefault();
+    // }, []);
+
     return (
       <table
         ref={ref}
-        style={{ ...props.style, ...tableStyle, maxWidth }}
+        style={{ ...props.style, ...tableStyle, width: '100%' }}
         {...props.attributes}
         onDragStart={onDragStart}
+        // onContextMenu={onContextMenu}
       >
         {props.children}
       </table>
@@ -153,11 +157,21 @@ type CellProps = {
 };
 
 const Cell = React.memo((props: CellProps) => {
-  const width = typeof props.node.data.get('width') === 'undefined' ? 'auto' : props.node.data.get('width') + 'px';
+  const isRightClick = (e: any) => {
+    if (e.which) {
+      return e.which === 3;
+    }
+    if (e.button) {
+      return e.button === 2;
+    }
+    return false;
+  };
+
   const onMouseUp = React.useCallback((e: Event) => {
     props.store.clearCellSelecting(props.editor);
     window.removeEventListener('mouseup', onMouseUp);
   }, []);
+
   const onWindowClick = React.useCallback(
     (e: Event) => {
       if (!table.findCurrentTable(props.editor, props.opts)) {
@@ -177,69 +191,88 @@ const Cell = React.memo((props: CellProps) => {
     };
   }, [onMouseUp, onWindowClick]);
 
+  const onMouseDown: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!isRightClick(e)) {
+      props.store.setAnchorCellBlock(null);
+      props.store.setFocusCellBlock(null);
+      removeSelection(props.editor);
+      props.store.setCellSelecting(props.editor);
+      const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+      props.store.setAnchorCellBlock(anchorCellBlock);
+      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('click', onWindowClick);
+    }
+  };
+  const onContextMenu = (e: any) => {
+    const t = table.TableLayout.create(props.editor, props.opts);
+    if (!t) return false;
+    const anchored = table.findAnchorCell(props.editor, props.opts);
+    const focused = table.findFocusCell(props.editor, props.opts);
+    if ((anchored || focused) && props.node.data.get('selectionColor')) {
+      e.preventDefault();
+    } else {
+      // console.log('[non selected cell right clicked ]', anchored);
+      removeSelection(props.editor);
+    }
+  };
+  const onMouseOver: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
+    e.stopPropagation();
+    const anchorCellBlock = props.store.getAnchorCellBlock();
+    if (anchorCellBlock === null) return;
+    if (!(e.target instanceof HTMLElement)) return;
+    if (!props.store.getCellSelecting()) return;
+    const focusCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+    if (!focusCellBlock) return;
+    const prevFocusBlock = props.store.getFocusCellBlock();
+    if (focusCellBlock.key === (prevFocusBlock && prevFocusBlock.key)) return;
+    const t = table.TableLayout.create(props.editor, props.opts);
+    if (!t) {
+      removeSelection(props.editor);
+      props.store.setAnchorCellBlock(null);
+      props.store.setFocusCellBlock(null);
+      return;
+    }
+    props.store.setFocusCellBlock(focusCellBlock);
+    // HACK: Add ::selection style when greater than 1 cells selected.
+    addSelectionStyle();
+    const blocks = table.createSelectedBlockMap(props.editor, anchorCellBlock.key, focusCellBlock.key, props.opts);
+    props.editor.withoutSaving(() => {
+      t.table.forEach(row => {
+        row.forEach(cell => {
+          if (blocks[cell.key]) {
+            props.editor.setNodeByKey(cell.key, {
+              type: cell.block.type,
+              data: {
+                ...cell.block.data.toObject(),
+                selectionColor: props.opts.selectionColor,
+              },
+            });
+          } else {
+            props.editor.setNodeByKey(cell.key, {
+              type: cell.block.type,
+              data: { ...cell.block.data.toObject(), selectionColor: null },
+            });
+          }
+        });
+      });
+    });
+  };
+  const selectionColor = props.node.data.get('selectionColor');
+  const isTitleColumn = props.node.data.get('isTitleColumn');
   return (
     <td
       {...props.attributes}
-      onMouseDown={e => {
-        if (!(e.target instanceof HTMLElement)) return;
-        props.store.setAnchorCellBlock(null);
-        props.store.setFocusCellBlock(null);
-        removeSelection(props.editor);
-        props.store.setCellSelecting(props.editor);
-        const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-        props.store.setAnchorCellBlock(anchorCellBlock);
-        window.addEventListener('mouseup', onMouseUp);
-        window.addEventListener('click', onWindowClick);
-      }}
-      onMouseOver={e => {
-        const anchorCellBlock = props.store.getAnchorCellBlock();
-        if (anchorCellBlock === null) return;
-        if (!(e.target instanceof HTMLElement)) return;
-        if (!props.store.getCellSelecting()) return;
-        const focusCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-        if (!focusCellBlock) return;
-        const prevFocusBlock = props.store.getFocusCellBlock();
-        if (focusCellBlock.key === (prevFocusBlock && prevFocusBlock.key)) return;
-        const t = table.TableLayout.create(props.editor, props.opts);
-        if (!t) {
-          removeSelection(props.editor);
-          props.store.setAnchorCellBlock(null);
-          props.store.setFocusCellBlock(null);
-          return;
-        }
-        props.store.setFocusCellBlock(focusCellBlock);
-        // HACK: Add ::selection style when greater than 1 cells selected.
-        addSelectionStyle();
-
-        const blocks = table.createSelectedBlockMap(props.editor, anchorCellBlock.key, focusCellBlock.key, props.opts);
-        props.editor.withoutSaving(() => {
-          t.table.forEach(row => {
-            row.forEach(cell => {
-              if (blocks[cell.key]) {
-                props.editor.setNodeByKey(cell.key, {
-                  type: cell.block.type,
-                  data: {
-                    ...cell.block.data.toObject(),
-                    selectionColor: props.opts.selectionColor,
-                  },
-                });
-              } else {
-                props.editor.setNodeByKey(cell.key, {
-                  type: cell.block.type,
-                  data: { ...cell.block.data.toObject(), selectionColor: null },
-                });
-              }
-            });
-          });
-        });
-      }}
+      onMouseDown={onMouseDown}
+      onContextMenu={onContextMenu}
+      onMouseOver={onMouseOver}
       colSpan={props.node.data.get('colspan')}
       rowSpan={props.node.data.get('rowspan')}
       style={{
         ...props.opts.cellStyle,
-        width,
+        minWidth: '32px',
         verticalAlign: 'baseline',
-        backgroundColor: props.node.data.get('selectionColor'),
+        backgroundColor: selectionColor ? selectionColor : isTitleColumn ? props.opts.titleColor : null,
       }}
     >
       {props.children}
@@ -255,7 +288,6 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
       case opts.typeContent:
         return <Content attributes={props.attributes}> {props.children}</Content>;
       case opts.typeTable:
-        const maxWidth = props.node.data.get('maxWidth') as string | undefined;
         return (
           <Table
             ref={ref}
@@ -264,7 +296,6 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
             onInit={updateWidth}
             onUpdate={updateWidth}
             onResizeStop={updateWidth}
-            maxWidth={maxWidth}
             style={opts.tableStyle}
             attributes={props.attributes}
           >
@@ -273,7 +304,11 @@ export function createRenderers(opts: Required<Option>, ref: any, store: Compone
         );
       case opts.typeRow:
         return (
-          <tr {...props.attributes} style={opts.rowStyle} onDrag={preventDefault}>
+          <tr
+            {...props.attributes}
+            style={{ backgroundColor: props.node.data.get('isTitleRow') ? opts.titleColor : null }}
+            onDrag={preventDefault}
+          >
             {props.children}
           </tr>
         );

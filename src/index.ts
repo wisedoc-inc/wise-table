@@ -2,7 +2,7 @@ import { Editor, Block } from 'slate';
 import * as React from 'react';
 
 import * as table from './layout';
-import { removeSelection } from './selection';
+// import { removeSelection } from './selection';
 import { canMerge } from './mutations/merge';
 import { TableOption } from './create-table';
 import { removeRow } from './mutations/remove-row';
@@ -14,6 +14,8 @@ import { Option, defaultOptions } from './option';
 
 import { insertAbove } from './mutations/insert-above';
 import { insertBelow } from './mutations/insert-below';
+import { makeTitleRow } from './mutations/make-title-row';
+import { makeTitleColumn } from './mutations/make-title-column';
 
 import { insertLeft } from './mutations/insert-left';
 import { insertRight } from './mutations/insert-right';
@@ -27,19 +29,21 @@ import { createRenderers, TableHandler } from './renderers';
 import { createSchema } from './schema';
 
 export interface EditTableCommands {
+  areMultipleCellsSelected: () => boolean;
   isSelectionInTable: () => boolean;
   findCurrentTable: () => Block | null;
   insertTable: (col?: number, row?: number, tableOption?: TableOption) => EditTableCommands & Editor;
-
   disableResizing: () => void;
   enableResizing: () => void;
 
   insertRow: () => EditTableCommands & Editor;
   insertAbove: () => EditTableCommands & Editor;
   insertBelow: () => EditTableCommands & Editor;
+  makeTitleRow: () => EditTableCommands & Editor;
 
   insertLeft: () => EditTableCommands & Editor;
   insertRight: () => EditTableCommands & Editor;
+  makeTitleColumn: () => EditTableCommands & Editor;
 
   mergeRight: () => EditTableCommands & Editor;
   mergeBelow: () => EditTableCommands & Editor;
@@ -56,6 +60,14 @@ export function EditTable(options: Option = defaultOptions) {
   const opts = { ...defaultOptions, ...options } as Required<Option>;
   const ref = React.createRef<TableHandler>();
   const store = new ComponentStore();
+
+  function areMultipleCellsSelected(editor: Editor) {
+    const t = table.TableLayout.create(editor, opts);
+    if (!t) return false;
+    const anchorCellBlock = store.getAnchorCellBlock();
+    const focusCellBlock = store.getFocusCellBlock();
+    return { anchorCellBlock, focusCellBlock };
+  }
 
   function isSelectionInTable(editor: Editor) {
     const { startBlock, endBlock } = editor.value;
@@ -228,10 +240,10 @@ export function EditTable(options: Option = defaultOptions) {
     }
   }
 
-  function onBlur(event: any, editor: any, next: () => void) {
-    removeSelection(editor);
-    next();
-  }
+  // function onBlur(event: any, editor: any, next: () => void) {
+  //   removeSelection(editor);
+  //   next();
+  // }
 
   const renderer = createRenderers(opts, ref, store);
   const { schema } = createSchema(opts);
@@ -239,7 +251,7 @@ export function EditTable(options: Option = defaultOptions) {
   return {
     schema,
     onKeyDown,
-    onBlur,
+    // onBlur,
     // For old version
     renderNode: renderer,
     // For slate-react@0.22.0~
@@ -247,6 +259,7 @@ export function EditTable(options: Option = defaultOptions) {
     queries: {
       hasTablePlugin: () => true,
       isSelectionInTable,
+      areMultipleCellsSelected,
       canSelectedCellsMerge,
       findCurrentTable: (editor: Editor) => table.findCurrentTable(editor, opts),
     },
@@ -263,9 +276,11 @@ export function EditTable(options: Option = defaultOptions) {
       // row
       insertAbove: bindEditor(insertAbove),
       insertBelow: bindEditor(insertBelow),
+      makeTitleRow: bindEditor(makeTitleRow),
       // column
       insertLeft: bindEditor(insertLeft),
       insertRight: bindEditor(insertRight),
+      makeTitleColumn: bindEditor(makeTitleColumn),
 
       mergeRight: bindEditor(mergeRight),
       mergeBelow: bindEditor(mergeBelow),
