@@ -104,17 +104,12 @@ export const InnerTable = React.forwardRef<TableHandler, TableProps & { attribut
       e.preventDefault();
     }, []);
 
-    // const onContextMenu = React.useCallback((e: React.SyntheticEvent) => {
-    //   e.preventDefault();
-    // }, []);
-
     return (
       <table
         ref={ref}
         style={{ ...props.style, ...tableStyle, width: '100%' }}
         {...props.attributes}
         onDragStart={onDragStart}
-        // onContextMenu={onContextMenu}
       >
         {props.children}
       </table>
@@ -193,18 +188,17 @@ const Cell = React.memo((props: CellProps) => {
 
   const onMouseDown: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
     if (!(e.target instanceof HTMLElement)) return;
-    if (!isRightClick(e)) {
-      props.store.setAnchorCellBlock(null);
-      props.store.setFocusCellBlock(null);
-      removeSelection(props.editor);
-      props.store.setCellSelecting(props.editor);
-      const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
-      props.store.setAnchorCellBlock(anchorCellBlock);
-      window.addEventListener('mouseup', onMouseUp);
-      window.addEventListener('click', onWindowClick);
-    }
+    props.store.setAnchorCellBlock(null);
+    props.store.setFocusCellBlock(null);
+    removeSelection(props.editor);
+    props.store.setCellSelecting(props.editor);
+    const anchorCellBlock = table.findCellBlockByElement(props.editor, e.target, props.opts);
+    props.store.setAnchorCellBlock(anchorCellBlock);
+    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('click', onWindowClick);
   };
-  const onContextMenu = (e: any) => {
+
+  const onContextMenu = (e: { preventDefault: () => void }) => {
     const t = table.TableLayout.create(props.editor, props.opts);
     if (!t) return false;
     const anchored = table.findAnchorCell(props.editor, props.opts);
@@ -212,10 +206,10 @@ const Cell = React.memo((props: CellProps) => {
     if ((anchored || focused) && props.node.data.get('selectionColor')) {
       e.preventDefault();
     } else {
-      // console.log('[non selected cell right clicked ]', anchored);
       removeSelection(props.editor);
     }
   };
+
   const onMouseOver: ((event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>) => void) | undefined = e => {
     e.stopPropagation();
     const anchorCellBlock = props.store.getAnchorCellBlock();
@@ -258,6 +252,7 @@ const Cell = React.memo((props: CellProps) => {
       });
     });
   };
+
   const selectionColor = props.node.data.get('selectionColor');
   const isTitleColumn = props.node.data.get('isTitleColumn');
   return (

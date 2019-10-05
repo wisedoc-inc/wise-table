@@ -28,7 +28,7 @@ export class ExampleEditor extends React.Component<Props> {
 
   onChange = ({ value }) => {
     this.setState({ value });
-    this.props.onChange({ value });
+    // this.props.onChange({ value });
   };
 
   removeTable = () => {
@@ -143,11 +143,7 @@ export class ExampleEditor extends React.Component<Props> {
           plugins={plugins}
           placeholder="Enter some text..."
           value={this.state.value}
-          onChange={e => {
-            // setTimeout(() => {
-            this.onChange(e);
-            // }, 500);
-          }}
+          onChange={this.onChange}
         />
       </>
     );
